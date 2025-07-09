@@ -1,0 +1,44 @@
+version: '3.8'
+
+services:
+  gateway:
+    build:
+      context: .
+      dockerfile: gateway/Dockerfile
+    ports:
+      - "8005:8000"
+      - "50051:50051"
+    networks:
+      - nl_private
+    depends_on:
+      - llm-manager
+
+  llm-manager:
+    build:
+      context: .
+      dockerfile: llm_manager/Dockerfile
+    ports:
+      - "8006:8001"
+    environment:
+      - OPENAI_API_KEY=${OPENAI_API_KEY}
+      - OLLAMA_HOST=ollama
+    networks:
+      - nl_private
+    depends_on:
+      - ollama
+
+  ollama:
+    image: ollama/ollama
+    ports:
+      - "11435:11434"
+    networks:
+      - nl_private
+    volumes:
+      - ollama_data:/root/.ollama
+
+networks:
+  nl_private:
+    driver: bridge
+
+volumes:
+  ollama_data: 

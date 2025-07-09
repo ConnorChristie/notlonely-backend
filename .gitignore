@@ -1,0 +1,5 @@
+# Environment variables
+.env
+
+# Docker
+ollama_data/

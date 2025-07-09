@@ -1,0 +1,23 @@
+syntax = "proto3";
+
+package notlonely;
+
+service ChatService {
+  rpc Chat(ChatRequest) returns (stream ChatResponse) {}
+}
+
+message ChatMessage {
+  string role = 1;
+  string content = 2;
+}
+
+message ChatRequest {
+  string provider = 1;
+  repeated ChatMessage messages = 2;
+  optional string model = 3;
+}
+
+message ChatResponse {
+  bool partial = 1;
+  string content = 2;
+} 
